@@ -9,7 +9,6 @@ import {
 import { baseData, mockdata, proData } from "../mock/demo1";
 import ReactNodeCard from "./ReactNodeCard";
 import { demo2 } from "../mock/demo2";
-import { dealData } from "../utils/commons";
 // import { getPaintings } from '../api/paintings';
 
 const colorObj = {
@@ -31,30 +30,29 @@ const Paintings = () => {
   //   }
   // });
 
-  // const mockData = {
-  //   id: "1803013336868947",
-  //   nodeType: "KPI",
-  //   userName: "司维坤",
-  //   userAvatar: {
-  //     image: {
-  //       large:
-  //         "https://s3-imfile.feishucdn.com/static-resource/v1/v3_007g_41528857-3b2e-466c-b764-0c8f8b8c469g~?image_size=noop&cut_type=&quality=&format=image&sticker_format=.webp",
-  //     },
-  //   },
-  //   content:
-  //     "在本季度内完成或超额完成既定的销售额目标，包括堂食、外卖和线上渠道的销售总额。",
-  //   list: [
-  //     {
-  //       _id: "1803015220386891",
-  //       basic_value: "8",
-  //       ceiling_value: "10",
-  //       lowest_value: "5",
-  //       work_item_content: "每月至少开发X个新客户。",
-  //     },
-  //   ],
-  //   children: demo2,
-  // };
-  const mockData = dealData();
+  const mockData = {
+    id: "1803013336868947",
+    nodeType: "KPI",
+    userName: "司维坤",
+    userAvatar: {
+      image: {
+        large:
+          "https://s3-imfile.feishucdn.com/static-resource/v1/v3_007g_41528857-3b2e-466c-b764-0c8f8b8c469g~?image_size=noop&cut_type=&quality=&format=image&sticker_format=.webp",
+      },
+    },
+    content:
+      "在本季度内完成或超额完成既定的销售额目标，包括堂食、外卖和线上渠道的销售总额。",
+    list: [
+      {
+        _id: "1803015220386891",
+        basic_value: "8",
+        ceiling_value: "10",
+        lowest_value: "5",
+        work_item_content: "每月至少开发X个新客户。",
+      },
+    ],
+    children: demo2,
+  };
 
   // 自定义节点、边
   const registerFn = () => {
@@ -78,7 +76,7 @@ const Paintings = () => {
         },
       },
       draw: function draw(cfg, group) {
-        // console.log(cfg, group)
+        console.log(cfg, group)
 
         const nodeType = cfg.targetNode._cfg.model?.nodeType;
 
@@ -188,18 +186,30 @@ const Paintings = () => {
         },
       },
       layout: {
-        // type: "mindmap",
-        // direction: "H",
-        type: "dagre",
-        rankdir: "RL",
-        // nodesep: 80,
-        ranksep: 180,
-        // nodesepFunc: (e) => {
-        //   if (e.list instanceof Array && e.list.length > 0) {
-        //     return 50 + 50 * e.list.length
-        //   }
-        //   return 50;
+        type: "mindmap",
+        direction: "H",
+        // type: 'compactBox',
+        // direction: 'LR',
+        dropCap: true,
+        // indent: 500,
+        getVGap: (e) => {
+          return 80;
+        },
+        // getHeight: (e) => {
+          // if (e.list instanceof Array && e.list.length > 0) {
+          //   return 60 + 60 * e.list.length
+          // }
+        //   return 10;
         // },
+        getWidth: () => {
+          return 500;
+        },
+        getSide: (d) => {
+          if (d.data.alignType === "forward") {
+            return "left";
+          }
+          return "right";
+        },
       },
     };
 
@@ -207,12 +217,13 @@ const Paintings = () => {
     //   return;
     // }
 
-    graph = new G6.Graph({
+    graph = new G6.TreeGraph({
       container: "container",
       ...defaultConfig,
       padding: [20, 50],
       defaultLevel: 3,
-      defaultZoom: 1,
+      defaultZoom: 0.5,
+      modes: { default: ["zoom-canvas", "drag-canvas"] },
       plugins: [minimap],
       fitView: true,
     });

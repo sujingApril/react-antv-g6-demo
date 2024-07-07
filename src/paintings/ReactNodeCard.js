@@ -276,16 +276,13 @@ const ReactNodeCard = ({ cfg }, mockData) => {
   const collapseFront = (event, node, shape, graph) => {
     const nodeModel = node._cfg.model;
 
-    if(!frontIds || (frontIds && frontIds.length <= 0) ){
-      updateData(graph, node, id, id, alignType="forward", leftChild);
-    }
     graph.updateItem(node, {
       frontCollapsed: !frontCollapsed,
     });
  
     nodeModel.frontCollapsed = !frontCollapsed;
     const items = graph.findAll("node", (node) => {
-      return node.get("model").alignType === "forward" && node.get("model").rootId === id;
+      return node.get("model").alignType === "forward";
     });
 
     items.map((item) => {
@@ -305,16 +302,14 @@ const ReactNodeCard = ({ cfg }, mockData) => {
   const collapseBack = (event, node, shape, graph) => {
 
     const nodeModel = node._cfg.model;
-    if(!backIds || (backIds && backIds.length <= 0) ){
-      updateData(graph, node, id, id, alignType="backward", rightChild);
-    }
+
     nodeModel.backCollapsed = !backCollapsed;
     graph.updateItem(node, {
       backCollapsed: !backCollapsed,
     });
 
     const items = graph.findAll("node", (node) => {
-      return node.get("model").alignType === "backward" && node.get("model").rootId === id;
+      return node.get("model").alignType === "backward";
     });
 
     items.map((item) => {
@@ -428,7 +423,7 @@ const ReactNodeCard = ({ cfg }, mockData) => {
           </Rect>
         )} */}
         {/* 卡片 */}
-        <Rect>
+         <Rect>
           <Rect
             style={{
               width: "auto",
@@ -502,7 +497,7 @@ const ReactNodeCard = ({ cfg }, mockData) => {
                 {!listCollapsed ? "展开" : "收起"}
               </Text>
             )}
-            {/* </Rect> */}
+            {/* </Rect>  */}
           </Rect>
         </Rect>
         {/* 是否显示list */}
@@ -520,7 +515,7 @@ const ReactNodeCard = ({ cfg }, mockData) => {
         )}
 
         {/* 根节点展开收起按钮 */}
-        {isRoot && (
+        {depth === 0 && (
           <Rect>
             <Rect
               style={{
@@ -548,7 +543,10 @@ const ReactNodeCard = ({ cfg }, mockData) => {
                 }}
                 onClick={collapseFront}
               >
-                {frontCollapsed ? (frontIds?.length || 0) + ""
+                {frontCollapsed
+                  ? (cfg?.children?.filter(
+                      (item) => item.alignType === "forward"
+                    )?.length || 0) + ""
                   : "-"}
               </Text>
             </Rect>
@@ -580,14 +578,18 @@ const ReactNodeCard = ({ cfg }, mockData) => {
                 }}
                 onClick={collapseBack}
               >
-                {backCollapsed ? (backIds?.length || 0) + "" : "-"}
+                {backCollapsed
+                  ? (cfg?.children?.filter(
+                      (item) => item.alignType === "backward"
+                    )?.length || 0) + ""
+                  : "-"}
               </Text>
             </Rect>
           </Rect>
         )}
 
         {/* 子节点展开收起按钮 */}
-        {!isRoot &&
+        {depth !== 0 &&
           (alignType === "forward" ? (
             <Rect
               style={{
