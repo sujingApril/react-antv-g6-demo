@@ -1,6 +1,6 @@
 export const leftChild = [
     {
-        "id": "1803782147722240",
+        "id": "1803782147722241",
         "nodeType": "KPI",
         "userName": "魏志宇",
         "userAvatar": {

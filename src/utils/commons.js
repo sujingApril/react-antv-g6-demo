@@ -2,12 +2,14 @@ import G6 from "@antv/g6";
 import { demo2 } from "../mock/demo2";
 import { leftChild } from "../mock/kpiLeft";
 import { rightChild } from "../mock/kpiRight";
-import { Children } from "react";
 
 export const dealData = () => {
+  const nodes = dealNodeList(demo2);
+
+  console.log(nodes);
   const data = {
     nodes: [
-      ...demo2,
+      ...nodes,
       // ...leftChild,
       // ...rightChild
     ],
@@ -64,30 +66,44 @@ export const superLongTextHandle = (str, maxWidth, fontSize) => {
       )}`;
     }
   });
-  return [res];
+  return res;
 };
 
 export const dealNodeList = (list, alignType) => {
   list.map((node) => {
     dealNodeData(node, alignType);
   });
-  console.log("dealNodeList", list);
   return list;
 };
 
+// 处理根节点
 export const dealNodeData = (node, alignType) => {
-  node.alignType = alignType;
+  // node.alignType = alignType;
   node.isAlign = true;
+  node.isRoot = true;
   if (alignType === "forward") {
     node.frontCollapsed = true;
+    node.frontIds = [];
   } else {
     node.backCollapsed = true;
+    node.backIds = [];
   }
 };
 
-export const updateData = (graph, node, id, rootId, alignType, nodes) => {
+// 添加新节点
+export const updateData = (
+  graph,
+  node,
+  id,
+  rootId,
+  alignType,
+  nodes,
+  collapseName
+) => {
   const idsName = alignType === "forward" ? "frontIds" : "backIds";
-  const ids = nodes.map((item) => id);
+
+  console.log(nodes);
+  const ids = nodes.map((item) => item.id);
 
   const edges = [];
 
@@ -97,16 +113,17 @@ export const updateData = (graph, node, id, rootId, alignType, nodes) => {
       source: alignType === "forward" ? id : item.id,
     };
     edges.push(edgesObj);
+    // 新节点新增字段
     item.rootId = rootId;
     item.alignType = alignType;
+    item.collapsedIcon = true;
   });
 
-
+  // 当前节点新增
   graph.updateItem(node, {
     [idsName]: ids,
-    children: nodes
+    [collapseName]: !node._cfg.model[collapseName],
   });
-
   console.log(edges, nodes);
   const oldData = {};
   const oldNodes = graph.getNodes().map((node) => node.getModel());
@@ -114,5 +131,56 @@ export const updateData = (graph, node, id, rootId, alignType, nodes) => {
   oldData.nodes = [...oldNodes, ...nodes];
   oldData.edges = [...oldEdges, ...edges];
   graph.changeData(oldData);
-  graph.render();
+  graph.layout();
+};
+
+export const getChildNodes = (alignType, curNode, graph) => {
+  const idsName = alignType === "forward" ? "frontIds" : "backIds";
+  // let ids = [];
+  let resultNodes = [];
+
+  const traverse = (inNode) => {
+    let nodes = [];
+    if (inNode?.[idsName]) {
+      // ids = ids.concat(inNode?.[idsName]);
+      nodes = graph.findAll("node", (node) => {
+        return inNode[idsName].indexOf(node.getModel().id) >= 0;
+      });
+      resultNodes = resultNodes.concat(nodes);
+    }
+
+    nodes &&
+      nodes.length > 0 &&
+      nodes.map((node) => {
+        traverse(node.getModel());
+      });
+  };
+
+  traverse(curNode);
+
+  return resultNodes;
+};
+
+export const getBoxHeight = ( node, collapsed) => {
+  const nodeModel = node.getModel();
+
+  let contentLineNum = nodeModel?.content
+    ? superLongTextHandle(nodeModel?.content, 300, 14).split("\n")?.length
+    : 1;
+
+  if (!collapsed) {
+    let contentLineNum2 = 0;
+    nodeModel?.list?.map((item) => {
+      const workItemContentNum = item?.work_item_content
+        ? superLongTextHandle(item?.work_item_content, 290, 14).split("\n")
+            ?.length
+        : 1;
+        contentLineNum2 = contentLineNum2 + workItemContentNum;
+    });
+    const height = 118 + contentLineNum * 16 + contentLineNum2 * 14 + nodeModel?.list?.length * 62;
+    console.log("height", height);
+    return height;
+  } else {
+    return 118 + contentLineNum * 16;
+  }
 };

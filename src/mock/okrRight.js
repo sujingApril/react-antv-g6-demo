@@ -1,6 +1,6 @@
 export const rightChild2 = [
   {
-    id: "1803278288396322",
+    id: "18032782883963221",
     nodeType: "PROJECT",
     userName: "魏志宇",
     userAvatar: {
@@ -19,7 +19,7 @@ export const rightChild2 = [
     alignType: "backward",
   },
   {
-    id: "1803688926082153",
+    id: "18036889260821532",
     nodeType: "KPI",
     userName: "彭洁",
     userAvatar: {
@@ -37,21 +37,21 @@ export const rightChild2 = [
     content: "22",
     list: [
       {
-        _id: "1803689323743348",
+        _id: "18036893237433481",
         basic_value: "2",
         ceiling_value: null,
         lowest_value: "1",
         work_item_content: "111",
       },
       {
-        _id: "1803689348611129",
+        _id: "18036893486111291",
         basic_value: "4",
         ceiling_value: "2",
         lowest_value: "6",
         work_item_content: "33",
       },
       {
-        _id: "1803689591269427",
+        _id: "18036895912694271",
         basic_value: "23",
         ceiling_value: null,
         lowest_value: "43",
@@ -62,7 +62,7 @@ export const rightChild2 = [
     alignType: "backward",
   },
   {
-    id: "1803290327216185",
+    id: "18032903272161853",
     nodeType: "OKR",
     userName: "程泽华",
     userAvatar: {

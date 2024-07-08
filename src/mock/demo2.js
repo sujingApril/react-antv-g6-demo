@@ -24,12 +24,13 @@ export const demo2 = [
         work_item_content: "每月至少开发X个新客户。",
       },
     ],
-
+    children:[],
     // 新增字段
     // frontCollapsed: true,
-    isRoot: true,
-    frontIds: [],
-    backIds: []
+    // backCollapsed: true,
+    // isRoot: true,
+    // frontIds: [],
+    // backIds: []
   },
   {
     id: "1803282291305514",
@@ -129,11 +130,13 @@ export const demo2 = [
           "每月至少开发X个新客户。每月至少开发X个新客户。每月至少开发X个新客户。每月至少开发X个新客户。",
       },
     ],
+    children:[],
     // 新增字段
     // frontCollapsed: true,
-    isRoot: true,
-    frontIds: [],
-    backIds: []
+    // backCollapsed: true,
+    // isRoot: true,
+    // frontIds: [],
+    // backIds: []
   },
   {
     id: "1803278288395321",
@@ -151,11 +154,13 @@ export const demo2 = [
     },
     content: "33",
     list: [],
+    children:[],
     // 新增字段
     // frontCollapsed: true,
-    isRoot: true,
-    frontIds: [],
-    backIds: []
+    // backCollapsed: true,
+    // isRoot: true,
+    // frontIds: [],
+    // backIds: []
   },
   // {
   //   id: "1803282941316185",

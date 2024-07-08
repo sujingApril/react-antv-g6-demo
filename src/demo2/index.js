@@ -6,7 +6,6 @@ import { demo2 } from "../mock/demo2";
 import {
   dealData,
   superLongTextHandle,
-  superLongTextHandle2,
 } from "../utils/commons";
 import {
   createNodeFromReact,
@@ -895,7 +894,7 @@ const Demo2 = () => {
         type: "dagre",
         rankdir: "RL",
         nodesep: 80,
-        ranksep: 200,
+        ranksep: 100,
       },
       modes: {
         default: ["zoom-canvas", "drag-canvas"],
