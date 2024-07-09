@@ -227,9 +227,6 @@ const ReactNodeCard = ({ cfg }, mockData) => {
     nodeType,
     content,
     list,
-    // project:{
-    //     name,
-    // },
 
     isRoot,
     rootId,
@@ -247,15 +244,14 @@ const ReactNodeCard = ({ cfg }, mockData) => {
     visible,
   } = cfg;
 
-  console.log(cfg)
-
   content = content ? superLongTextHandle(content, 300, 14) : "--"
 
   nodeType =
     nodeType === "OKR" ? "O" : nodeType === "PROJECT" ? "项目" : nodeType;
 
+    // 点击子节点“+/-”按钮
   const collapseClick = (event, node, shape, graph, alignType) => {
-    console.log(event, node, shape, graph, alignType)
+
     const nodes = getChildNodes(alignType, node.getModel(), graph);
     if (collapsedIcon) { // true : 展开-无值：请求数据；有值：返显
       if (
@@ -264,6 +260,7 @@ const ReactNodeCard = ({ cfg }, mockData) => {
 
         
         if(!frontIds || (frontIds && frontIds.length <= 0)){
+          // 这里请求数据
           if(id === "1803290282309643"){
             updateData(
               graph,
@@ -285,6 +282,7 @@ const ReactNodeCard = ({ cfg }, mockData) => {
               "collapsedIcon"
             );
           }
+          // 到这删掉， 请求后处理数据 调用updateData()
         }else{
           graph.updateItem(node, {
             collapsedIcon: !collapsedIcon,
@@ -300,6 +298,7 @@ const ReactNodeCard = ({ cfg }, mockData) => {
       ) {
         if((!backIds ||
           (backIds && backIds.length <= 0))){
+            // 这里请求数据
             updateData(
               graph,
               node,
@@ -320,8 +319,6 @@ const ReactNodeCard = ({ cfg }, mockData) => {
         }
       }
     } else {
-      console.log(collapsedIcon);
-
       graph.updateItem(node, {
         collapsedIcon: !collapsedIcon,
       });
@@ -339,8 +336,6 @@ const ReactNodeCard = ({ cfg }, mockData) => {
       const nodeModel = node._cfg.model;
       nodeModel.collapsedIcon = !collapsedIcon;
       const idsName = alignType === "forward" ? "frontIds" : "backIds";
-      
-      console.log(nodes)
       nodes.map(_node =>{
         graph.hideItem(_node);
       })
@@ -353,17 +348,18 @@ const ReactNodeCard = ({ cfg }, mockData) => {
     }
   };
 
+  // 点击根节点左侧“+/-”按钮
   const collapseFront = (event, node, shape, graph) => {
-    console.log("collapseFront", alignType);
     const nodeModel = node._cfg.model;
     if ((frontCollapsed && !frontIds) || (frontIds && frontIds.length <= 0)) {
+       // 这里请求数据
       updateData(
         graph,
         node,
         id,
         id,
         (alignType = "forward"),
-        leftChild,
+        leftChild, // 修改data
         "frontCollapsed"
       );
     } else {
@@ -394,10 +390,11 @@ const ReactNodeCard = ({ cfg }, mockData) => {
     }
   };
 
+  // 点击根节点右侧“+/-”按钮
   const collapseBack = (event, node, shape, graph) => {
-    console.log("collapseBack", alignType);
     const nodeModel = node._cfg.model;
     if ((backCollapsed && !backIds) || (backIds && backIds.length <= 0)) {
+       // 这里请求数据
       updateData( graph, node, id, id, (alignType = "backward"), rightChild, "backCollapsed" );
     } else {
       nodeModel.backCollapsed = !backCollapsed;
@@ -580,7 +577,6 @@ const ReactNodeCard = ({ cfg }, mockData) => {
                   const nodeModel = node._cfg.model;
                   
                   const newHeight = getBoxHeight( node, listCollapsed);
-                  console.log("newHeight", newHeight);
                   graph.updateItem(node, {
                     listCollapsed: !listCollapsed,
                     size: [0, newHeight],

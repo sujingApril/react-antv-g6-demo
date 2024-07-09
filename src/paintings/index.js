@@ -18,10 +18,11 @@ const colorObj = {
 const Paintings = () => {
   const ref = React.useRef(null);
 
+  // 初始化 请求数据
   // let { data: mockData } = useRequest(() => getPaintings(id), {
   //   onSuccess: (data) => {
   //     if (data) {
-
+  //     这里处理数据 dealData()
   //     } else {
   //       message.warning('查询信息有误！');
   //     }
@@ -85,7 +86,7 @@ const Paintings = () => {
     registerFn();
     const container = document.getElementById("container");
     const width = container.scrollWidth;
-    const height = container.scrollHeight || 500;
+    const height = container.scrollHeight || 1080;
 
     // 默认配置
     const minimap = new G6.Minimap({
@@ -122,6 +123,7 @@ const Paintings = () => {
       layout: {
         type: "dagre",
         rankdir: "RL",
+        // align: "UL",
         // nodesep: 80,
         ranksep: 180,
         // nodesepFunc: (e) => {

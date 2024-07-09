@@ -1,43 +1,13 @@
 import G6 from "@antv/g6";
 import { demo2 } from "../mock/demo2";
-import { leftChild } from "../mock/kpiLeft";
-import { rightChild } from "../mock/kpiRight";
 
 export const dealData = () => {
   const nodes = dealNodeList(demo2);
-
-  console.log(nodes);
   const data = {
     nodes: [
       ...nodes,
-      // ...leftChild,
-      // ...rightChild
     ],
     edges: [
-      // {
-      //   source: "1803278288395322",
-      //   target: "1803013336868948",
-      // },
-      // {
-      //   source: "1802927753101577",
-      //   target: "1803013336868948",
-      // },
-      // {
-      //   source: "1803523808856121",
-      //   target: "1803013336868948",
-      // },
-      // {
-      //   source: "1803805678563364",
-      //   target: "1803013336868948",
-      // },
-      // {
-      //   source: "1803013336868948", // 右
-      //   target: "1803782147722240", // 左
-      // },
-      // {
-      //   source: "1803013336868948",
-      //   target: "1803805678563366",
-      // },
     ],
   };
   return data;
@@ -84,7 +54,12 @@ export const dealNodeData = (node, alignType) => {
   if (alignType === "forward") {
     node.frontCollapsed = true;
     node.frontIds = [];
-  } else {
+  } else if(alignType === "backward") {
+    node.backCollapsed = true;
+    node.backIds = [];
+  }else{
+    node.frontCollapsed = true;
+    node.frontIds = [];
     node.backCollapsed = true;
     node.backIds = [];
   }
@@ -101,8 +76,6 @@ export const updateData = (
   collapseName
 ) => {
   const idsName = alignType === "forward" ? "frontIds" : "backIds";
-
-  console.log(nodes);
   const ids = nodes.map((item) => item.id);
 
   const edges = [];
@@ -124,7 +97,7 @@ export const updateData = (
     [idsName]: ids,
     [collapseName]: !node._cfg.model[collapseName],
   });
-  console.log(edges, nodes);
+
   const oldData = {};
   const oldNodes = graph.getNodes().map((node) => node.getModel());
   const oldEdges = graph.getEdges().map((edge) => edge.getModel());
@@ -178,7 +151,7 @@ export const getBoxHeight = ( node, collapsed) => {
         contentLineNum2 = contentLineNum2 + workItemContentNum;
     });
     const height = 118 + contentLineNum * 16 + contentLineNum2 * 14 + nodeModel?.list?.length * 62;
-    console.log("height", height);
+
     return height;
   } else {
     return 118 + contentLineNum * 16;
