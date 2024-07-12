@@ -31,6 +31,8 @@ export const demo2 = [
     // isRoot: true,
     // frontIds: [],
     // backIds: []
+    x: 300,
+    y: 300,
   },
   {
     id: "1803282291305514",
@@ -137,6 +139,8 @@ export const demo2 = [
     // isRoot: true,
     // frontIds: [],
     // backIds: []
+    x: 300,
+    y: 490,
   },
   {
     id: "1803278288395321",
@@ -161,6 +165,8 @@ export const demo2 = [
     // isRoot: true,
     // frontIds: [],
     // backIds: []
+    x: 300,
+    y: 680,
   },
   // {
   //   id: "1803282941316185",

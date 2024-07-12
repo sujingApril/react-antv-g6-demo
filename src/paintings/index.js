@@ -86,7 +86,7 @@ const Paintings = () => {
     registerFn();
     const container = document.getElementById("container");
     const width = container.scrollWidth;
-    const height = container.scrollHeight || 1080;
+    const height = container.scrollHeight || 800;
 
     // 默认配置
     const minimap = new G6.Minimap({
@@ -123,6 +123,7 @@ const Paintings = () => {
       layout: {
         type: "dagre",
         rankdir: "RL",
+        begin: [300,300],
         // align: "UL",
         // nodesep: 80,
         ranksep: 180,

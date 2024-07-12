@@ -244,6 +244,7 @@ const ReactNodeCard = ({ cfg }, mockData) => {
     visible,
   } = cfg;
 
+  console.log(cfg);
   content = content ? superLongTextHandle(content, 300, 14) : "--"
 
   nodeType =
@@ -437,7 +438,8 @@ const ReactNodeCard = ({ cfg }, mockData) => {
           radius: [8],
           justifyContent: "center",
           padding: [24, 16],
-          overflow:'hidden'
+          overflow:'hidden',
+          fixed: isRoot ? true : false,
         }}
         draggable
       >
